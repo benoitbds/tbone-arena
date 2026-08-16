@@ -56,14 +56,17 @@ func build(color_index: int) -> void:
 	_mat_body.clearcoat_roughness = 0.05
 
 	var mat_dark: StandardMaterial3D = StandardMaterial3D.new()
-	mat_dark.albedo_color = Color(0.055, 0.055, 0.065)
+	mat_dark.albedo_color = Color(0.20, 0.20, 0.23)
 	mat_dark.metallic = 0.35
 	mat_dark.roughness = 0.72
 
 	var mat_glass: StandardMaterial3D = StandardMaterial3D.new()
-	mat_glass.albedo_color = Color(0.02, 0.02, 0.05)
+	# Verre fumé : l'albédo d'origine lisait 0.0017 de luminance linéaire — un
+	# trou noir au milieu du véhicule — et roughness 0.04 ne renvoyait qu'un
+	# reflet spéculaire ponctuel. Une rugosité plus élevée capte l'ambiante.
+	mat_glass.albedo_color = Color(0.10, 0.10, 0.16)
 	mat_glass.metallic = 0.95
-	mat_glass.roughness = 0.04
+	mat_glass.roughness = 0.12
 	mat_glass.clearcoat_enabled = true
 	mat_glass.clearcoat = 1.0
 	mat_glass.clearcoat_roughness = 0.02
@@ -74,7 +77,7 @@ func build(color_index: int) -> void:
 	mat_steel.roughness = 0.24
 
 	var mat_engine: StandardMaterial3D = StandardMaterial3D.new()
-	mat_engine.albedo_color = Color(0.18, 0.17, 0.16)
+	mat_engine.albedo_color = Color(0.44, 0.42, 0.40)
 	mat_engine.metallic = 0.7
 	mat_engine.roughness = 0.5
 

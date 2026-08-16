@@ -80,7 +80,7 @@ func _build_terrain() -> void:
 	mesh.subdivide_width = 32
 	mesh.subdivide_depth = 32
 	ground.mesh = mesh
-	ground.material_override = Surfaces.make_gravel(Color(0.075, 0.068, 0.058), 34.0)
+	ground.material_override = Surfaces.make_gravel(Color(0.46, 0.44, 0.40), 34.0)  # lin. 0.164
 	# Juste sous le ruban d'asphalte (posé à +0.02).
 	ground.position = Vector3(0.0, 0.012, 0.0)
 	add_child(ground)
@@ -117,7 +117,7 @@ func _build_road_surface() -> void:
 	surface.generate_normals()
 
 	# Grain de bitume : normal map + carte de rugosité générées par bruit.
-	var asphalt: StandardMaterial3D = Surfaces.make_asphalt(Color(0.105, 0.11, 0.125), 6.0)
+	var asphalt: StandardMaterial3D = Surfaces.make_asphalt(Color(0.33, 0.34, 0.36), 6.0)  # lin. 0.094
 
 	var road: MeshInstance3D = MeshInstance3D.new()
 	road.name = "RoadSurface"
@@ -239,7 +239,7 @@ func _build_floodlights() -> void:
 	]
 
 	var mat_mast: StandardMaterial3D = StandardMaterial3D.new()
-	mat_mast.albedo_color = Color(0.16, 0.16, 0.18)
+	mat_mast.albedo_color = Color(0.42, 0.42, 0.45)
 	mat_mast.metallic = 0.6
 	mat_mast.roughness = 0.5
 

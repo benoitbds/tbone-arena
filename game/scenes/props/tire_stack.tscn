@@ -11,7 +11,7 @@ height = 0.9
 radius = 0.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
-albedo_color = Color(0.12, 0.12, 0.12, 1)
+albedo_color = Color(0.23, 0.23, 0.23, 1)
 roughness = 0.9
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_tire"]

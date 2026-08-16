@@ -1,0 +1,14 @@
+# Cache généré par Godot.
+#
+# NE JAMAIS versionner : `global_script_class_cache.cfg` masquerait les pannes
+# de démarrage à froid. Un clone neuf ou une image Docker fraîche n'a pas ce
+# cache — c'est précisément la situation où les types `class_name` deviennent
+# introuvables. Le projet doit démarrer sans lui.
+.godot/
+
+# Binaires exportés
+builds/
+
+# Python
+__pycache__/
+*.pyc

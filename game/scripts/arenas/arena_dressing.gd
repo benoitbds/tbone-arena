@@ -31,7 +31,7 @@ func _build_terrain() -> void:
 	mesh.subdivide_width = 20
 	mesh.subdivide_depth = 20
 	ground.mesh = mesh
-	ground.material_override = Surfaces.make_gravel(Color(0.07, 0.063, 0.054), 24.0)
+	ground.material_override = Surfaces.make_gravel(Color(0.45, 0.43, 0.39), 24.0)  # lin. 0.156
 	# Sous la dalle d'asphalte (dont la face supérieure est à Y = 0).
 	ground.position = Vector3(0.0, -0.06, 0.0)
 	add_child(ground)
@@ -45,7 +45,7 @@ func _retexture_surfaces() -> void:
 
 	var floor_mesh: MeshInstance3D = arena.get_node_or_null("ArenaFloor/MeshInstance3D") as MeshInstance3D
 	if floor_mesh:
-		floor_mesh.material_override = Surfaces.make_asphalt(Color(0.115, 0.12, 0.135), 14.0)
+		floor_mesh.material_override = Surfaces.make_asphalt(Color(0.34, 0.35, 0.37), 14.0)  # lin. 0.100
 
 	var steel: StandardMaterial3D = Surfaces.make_galvanised_steel()
 	for side: String in ["RailNorth", "RailSouth", "RailWest", "RailEast"]:
@@ -57,7 +57,7 @@ func _retexture_surfaces() -> void:
 ## Quatre mâts en périphérie, orientés vers le centre de l'arène.
 func _build_floodlight_masts() -> void:
 	var mat_mast: StandardMaterial3D = StandardMaterial3D.new()
-	mat_mast.albedo_color = Color(0.15, 0.15, 0.17)
+	mat_mast.albedo_color = Color(0.41, 0.41, 0.44)
 	mat_mast.metallic = 0.65
 	mat_mast.roughness = 0.45
 
