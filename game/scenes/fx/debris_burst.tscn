@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fx/sparks_impact.gd" id="1_fx_script"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_debris"]
+albedo_color = Color(0.42, 0.43, 0.46, 1)
+metallic = 0.6
+roughness = 0.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_debris"]
+material = SubResource("StandardMaterial3D_debris")
+size = Vector3(0.22, 0.06, 0.3)
+
+[node name="DebrisBurst" type="CPUParticles3D"]
+emitting = false
+amount = 60
+lifetime = 1.6
+one_shot = true
+explosiveness = 0.95
+mesh = SubResource("BoxMesh_debris")
+direction = Vector3(0, 1, 0)
+spread = 75.0
+gravity = Vector3(0, -16, 0)
+initial_velocity_min = 6.0
+initial_velocity_max = 14.0
+angular_velocity_min = -420.0
+angular_velocity_max = 420.0
+scale_amount_min = 0.6
+scale_amount_max = 1.8
+script = ExtResource("1_fx_script")

@@ -1,0 +1,103 @@
+services:
+  tbone-server:
+    build:
+      context: ../..
+      dockerfile: docker/server/Dockerfile
+    container_name: tbone-arena-server
+    restart: unless-stopped
+    ports:
+      # Port UDP autoritaire ENet Godot
+      - "7777:7777/udp"
+    volumes:
+      # Montage du dossier game pour un hot reload lors du redémarrage sans rebuild
+      - ../../game:/app
+    environment:
+      - SERVER_PORT=7777
+      - MAX_PLAYERS=16
+      - TICK_RATE=60
+    # Isolation et allocation légère de ressources
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  tbone-bot:
+    build:
+      context: ../..
+      dockerfile: docker/server/Dockerfile
+    # Le bot DOIT recevoir le même mode de jeu que le serveur : son arbre de
+    # scène sert d'adresse aux RPC. Ajouter --race des deux côtés pour le circuit.
+    entrypoint: ["godot4", "--headless", "--path", "/app", "res://scenes/network/bot_runner.tscn", "--", "--connect=tbone-server", "--port=7777"]
+    profiles:
+      - test
+    depends_on:
+      - tbone-server
+    volumes:
+      # Partage de volume pour refléter les modifications à chaud du script du bot
+      - ../../game:/app
+    # Allocation légère de ressources pour pouvoir instancier de nombreux bots
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # --- Variante Course Figure-8 -------------------------------------------
+  # docker compose --profile race up -d
+  # puis  docker compose --profile race-test up -d --scale tbone-bot-race=4
+  tbone-server-race:
+    build:
+      context: ../..
+      dockerfile: docker/server/Dockerfile
+    container_name: tbone-arena-server-race
+    restart: unless-stopped
+    entrypoint: ["godot4", "--headless", "--path", "/app", "--", "--server", "--race", "--port=7777"]
+    ports:
+      - "7778:7777/udp"
+    profiles:
+      - race
+    volumes:
+      - ../../game:/app
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  tbone-bot-race:
+    build:
+      context: ../..
+      dockerfile: docker/server/Dockerfile
+    entrypoint: ["godot4", "--headless", "--path", "/app", "res://scenes/network/bot_runner.tscn", "--", "--connect=tbone-server-race", "--port=7777", "--race"]
+    profiles:
+      - race-test
+    depends_on:
+      - tbone-server-race
+    volumes:
+      - ../../game:/app
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

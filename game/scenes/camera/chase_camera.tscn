@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/camera/dynamic_follow_camera.gd" id="1_chase_cam"]
+
+[node name="ChaseCamera" type="Camera3D"]
+fov = 72.0
+near = 0.1
+far = 400.0
+script = ExtResource("1_chase_cam")

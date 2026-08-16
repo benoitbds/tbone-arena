@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/fx/skidmark.gd" id="1_skid_script"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skid"]
+transparency = 1
+shading_mode = 2
+albedo_color = Color(0.03, 0.03, 0.035, 0.75)
+
+[sub_resource type="QuadMesh" id="QuadMesh_skid"]
+size = Vector2(0.3, 0.85)
+
+[node name="Skidmark" type="MeshInstance3D"]
+mesh = SubResource("QuadMesh_skid")
+material_override = SubResource("StandardMaterial3D_skid")
+script = ExtResource("1_skid_script")

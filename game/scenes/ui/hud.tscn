@@ -1,0 +1,302 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud_script"]
+
+[sub_resource type="FontVariation" id="FontVariation_race"]
+variation_transform = Transform2D(1, -0.22, 0, 1, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.04, 0.045, 0.06, 0.72)
+border_width_left = 3
+border_color = Color(0.95, 0.35, 0.15, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_results"]
+content_margin_left = 30.0
+content_margin_top = 26.0
+content_margin_right = 30.0
+content_margin_bottom = 26.0
+bg_color = Color(0.035, 0.04, 0.055, 0.93)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.72, 0.25, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.08, 0.09, 0.11, 0.85)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud_script")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopLeftPanel" type="PanelContainer" parent="Control"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 22.0
+offset_right = 340.0
+offset_bottom = 168.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="TopLeft" type="VBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 325.0
+offset_bottom = 155.0
+theme_override_constants/separation = 6
+
+[node name="HealthBar" type="ProgressBar" parent="Control/TopLeft"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="HealthText" type="Label" parent="Control/TopLeft/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "100 / 100 HP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NitroHeatBar" type="ProgressBar" parent="Control/TopLeft"]
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+show_percentage = false
+
+[node name="OverheatText" type="Label" parent="Control/TopLeft/NitroHeatBar"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "🔥 SURCHAUFFE ! 🔥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Speedometer" type="Label" parent="Control/TopLeft"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontVariation_race")
+theme_override_font_sizes/font_size = 30
+text = "0 km/h"
+
+[node name="TopRight" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -350.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 325.0
+grow_horizontal = 0
+
+[node name="KillfeedContainer" type="VBoxContainer" parent="Control/TopRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="RaceBoxPanel" type="PanelContainer" parent="Control/TopRight"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 104.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="RaceBox" type="VBoxContainer" parent="Control/TopRight"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 96.0
+grow_horizontal = 0
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="PositionLabel" type="Label" parent="Control/TopRight/RaceBox"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = SubResource("FontVariation_race")
+theme_override_font_sizes/font_size = 36
+text = "👑 1/5"
+horizontal_alignment = 2
+
+[node name="LapLabel" type="Label" parent="Control/TopRight/RaceBox"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_race")
+theme_override_font_sizes/font_size = 22
+text = "TOUR 1/3"
+horizontal_alignment = 2
+
+[node name="WrongWayLabel" type="Label" parent="Control/TopRight/RaceBox"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.25, 0.15, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "⛔ SENS INVERSE"
+horizontal_alignment = 2
+
+[node name="Center" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -50.0
+offset_right = 250.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnnounceLabel" type="Label" parent="Control/Center"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.93, 0.4, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = SubResource("FontVariation_race")
+theme_override_font_sizes/font_size = 74
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TBoneBanner" type="Label" parent="Control/Center"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = SubResource("FontVariation_race")
+theme_override_font_sizes/font_size = 36
+text = "💥 T-BONE CRITIQUE ! 💥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResultsPanel" type="PanelContainer" parent="Control"]
+visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_results")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -190.0
+offset_right = 320.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Control/ResultsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="VBox" type="VBoxContainer" parent="Control/ResultsPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ResultsTitle" type="Label" parent="Control/ResultsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = SubResource("FontVariation_race")
+theme_override_font_sizes/font_size = 38
+text = "🏁 CLASSEMENT FINAL"
+horizontal_alignment = 1
+
+[node name="ResultsBody" type="Label" parent="Control/ResultsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Control/ResultsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="ReplayButton" type="Button" parent="Control/ResultsPanel/Margin/VBox/Buttons"]
+custom_minimum_size = Vector2(250, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "REJOUER (Entrée)"
+
+[node name="MenuButton" type="Button" parent="Control/ResultsPanel/Margin/VBox/Buttons"]
+custom_minimum_size = Vector2(250, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "MENU PRINCIPAL (Échap)"

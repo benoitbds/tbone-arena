@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/network/bot_boot.gd" id="1_bot_boot"]
+
+; Scène d'amorce volontairement vide : bot_boot.gd charge le NIVEAU RÉEL
+; (arène ou circuit selon --race) pour que l'arbre du client soit identique à
+; celui du serveur, puis installe le pilote sous /root.
+[node name="BotBoot" type="Node"]
+script = ExtResource("1_bot_boot")

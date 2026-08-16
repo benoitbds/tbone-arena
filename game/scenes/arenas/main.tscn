@@ -1,0 +1,293 @@
+[gd_scene load_steps=23 format=3]
+
+[ext_resource type="Script" path="res://scripts/arenas/arena.gd" id="1_arena_script"]
+[ext_resource type="Script" path="res://scripts/arenas/arena_dressing.gd" id="4_dressing"]
+[ext_resource type="PackedScene" path="res://scenes/props/tire_stack.tscn" id="2_tire_stack"]
+[ext_resource type="PackedScene" path="res://scenes/props/barrel.tscn" id="3_barrel"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dusk"]
+sky_top_color = Color(0.043, 0.055, 0.114, 1)
+sky_horizon_color = Color(0.204, 0.153, 0.298, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.031, 0.035, 0.055, 1)
+ground_horizon_color = Color(0.204, 0.153, 0.298, 1)
+sun_angle_max = 22.0
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky_dusk"]
+sky_material = SubResource("ProceduralSkyMaterial_dusk")
+
+[sub_resource type="Environment" id="Environment_dusk"]
+background_mode = 2
+sky = SubResource("Sky_dusk")
+ambient_light_source = 3
+ambient_light_color = Color(0.42, 0.5, 0.72, 1)
+ambient_light_sky_contribution = 0.35
+ambient_light_energy = 1.25
+tonemap_mode = 3
+tonemap_exposure = 1.15
+tonemap_white = 3.0
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_intensity = 2.0
+ssr_enabled = true
+ssr_max_steps = 56
+ssr_fade_in = 0.25
+ssr_fade_in = 0.4
+ssr_fade_out = 3.0
+glow_enabled = true
+glow_intensity = 0.6
+glow_strength = 1.05
+glow_bloom = 0.2
+glow_blend_mode = 2
+glow_hdr_threshold = 1.0
+fog_enabled = true
+fog_light_color = Color(0.16, 0.15, 0.26, 1)
+fog_density = 0.0025
+fog_sky_affect = 0.3
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.005
+volumetric_fog_albedo = Color(0.1, 0.12, 0.18, 1)
+volumetric_fog_emission = Color(0.03, 0.03, 0.05, 1)
+volumetric_fog_gi_inject = 0.6
+volumetric_fog_length = 120.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_asphalt"]
+albedo_color = Color(0.115, 0.12, 0.135, 1)
+metallic_specular = 0.22
+roughness = 0.94
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(84, 2, 84)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+material = SubResource("StandardMaterial3D_asphalt")
+size = Vector3(84, 2, 84)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_marking"]
+albedo_color = Color(0.85, 0.86, 0.88, 1)
+shading_mode = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_marking_h"]
+material = SubResource("StandardMaterial3D_marking")
+size = Vector3(74, 0.02, 0.28)
+
+[sub_resource type="BoxMesh" id="BoxMesh_marking_v"]
+material = SubResource("StandardMaterial3D_marking")
+size = Vector3(0.28, 0.02, 74)
+
+[sub_resource type="TorusMesh" id="TorusMesh_center"]
+material = SubResource("StandardMaterial3D_marking")
+inner_radius = 11.7
+outer_radius = 12.0
+rings = 96
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_rail"]
+friction = 0.15
+bounce = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rail"]
+albedo_color = Color(0.74, 0.76, 0.79, 1)
+metallic = 0.9
+roughness = 0.28
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_post"]
+albedo_color = Color(0.13, 0.13, 0.15, 1)
+metallic = 0.4
+roughness = 0.65
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rail_h"]
+size = Vector3(80, 2.6, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rail_h"]
+material = SubResource("StandardMaterial3D_rail")
+size = Vector3(80, 1.1, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kerb_h"]
+material = SubResource("StandardMaterial3D_post")
+size = Vector3(80, 0.4, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rail_v"]
+size = Vector3(1, 2.6, 80)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rail_v"]
+material = SubResource("StandardMaterial3D_rail")
+size = Vector3(0.5, 1.1, 80)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kerb_v"]
+material = SubResource("StandardMaterial3D_post")
+size = Vector3(0.9, 0.4, 80)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_arena_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dusk")
+
+[node name="MoonLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.306186, 0.395104, 0, 0.790155, 0.612899, -0.5, -0.530731, 0.684697, 0, 26, 0)
+light_color = Color(0.596078, 0.678431, 0.929412, 1)
+light_energy = 0.55
+light_specular = 0.3
+shadow_enabled = true
+directional_shadow_mode = 2
+directional_shadow_max_distance = 120.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, 0.433013, -0.75, 0, 20, 0)
+light_color = Color(0.898039, 0.541176, 0.639216, 1)
+light_energy = 0.22
+shadow_enabled = false
+
+[node name="ArenaFloor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaFloor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaFloor"]
+mesh = SubResource("BoxMesh_floor")
+
+[node name="Markings" type="Node3D" parent="."]
+
+[node name="LineNorth" type="MeshInstance3D" parent="Markings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011, -37)
+mesh = SubResource("BoxMesh_marking_h")
+
+[node name="LineSouth" type="MeshInstance3D" parent="Markings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011, 37)
+mesh = SubResource("BoxMesh_marking_h")
+
+[node name="LineWest" type="MeshInstance3D" parent="Markings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37, 0.011, 0)
+mesh = SubResource("BoxMesh_marking_v")
+
+[node name="LineEast" type="MeshInstance3D" parent="Markings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 0.011, 0)
+mesh = SubResource("BoxMesh_marking_v")
+
+[node name="CenterRing" type="MeshInstance3D" parent="Markings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011, 0)
+mesh = SubResource("TorusMesh_center")
+
+[node name="RailNorth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40.5)
+physics_material_override = SubResource("PhysicsMaterial_rail")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RailNorth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+shape = SubResource("BoxShape3D_rail_h")
+
+[node name="Rail" type="MeshInstance3D" parent="RailNorth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("BoxMesh_rail_h")
+
+[node name="Kerb" type="MeshInstance3D" parent="RailNorth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_kerb_h")
+
+[node name="RailSouth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40.5)
+physics_material_override = SubResource("PhysicsMaterial_rail")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RailSouth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+shape = SubResource("BoxShape3D_rail_h")
+
+[node name="Rail" type="MeshInstance3D" parent="RailSouth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("BoxMesh_rail_h")
+
+[node name="Kerb" type="MeshInstance3D" parent="RailSouth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_kerb_h")
+
+[node name="RailWest" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.5, 0, 0)
+physics_material_override = SubResource("PhysicsMaterial_rail")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RailWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+shape = SubResource("BoxShape3D_rail_v")
+
+[node name="Rail" type="MeshInstance3D" parent="RailWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("BoxMesh_rail_v")
+
+[node name="Kerb" type="MeshInstance3D" parent="RailWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_kerb_v")
+
+[node name="RailEast" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.5, 0, 0)
+physics_material_override = SubResource("PhysicsMaterial_rail")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RailEast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+shape = SubResource("BoxShape3D_rail_v")
+
+[node name="Rail" type="MeshInstance3D" parent="RailEast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("BoxMesh_rail_v")
+
+[node name="Kerb" type="MeshInstance3D" parent="RailEast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_kerb_v")
+
+[node name="FloodLightNW" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 11, -34)
+light_color = Color(1, 0.858824, 0.678431, 1)
+light_energy = 6.0
+omni_range = 46.0
+omni_attenuation = 1.4
+
+[node name="FloodLightNE" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 11, -34)
+light_color = Color(1, 0.858824, 0.678431, 1)
+light_energy = 6.0
+omni_range = 46.0
+omni_attenuation = 1.4
+
+[node name="FloodLightSW" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 11, 34)
+light_color = Color(1, 0.858824, 0.678431, 1)
+light_energy = 6.0
+omni_range = 46.0
+omni_attenuation = 1.4
+
+[node name="FloodLightSE" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 11, 34)
+light_color = Color(1, 0.858824, 0.678431, 1)
+light_energy = 6.0
+omni_range = 46.0
+omni_attenuation = 1.4
+
+[node name="TireStackNW" parent="." instance=ExtResource("2_tire_stack")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, -33)
+
+[node name="TireStackNE" parent="." instance=ExtResource("2_tire_stack")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33, 0, -33)
+
+[node name="TireStackSW" parent="." instance=ExtResource("2_tire_stack")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, 33)
+
+[node name="TireStackSE" parent="." instance=ExtResource("2_tire_stack")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33, 0, 33)
+
+[node name="Barrel" parent="." instance=ExtResource("3_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+
+[node name="Dressing" type="Node3D" parent="."]
+script = ExtResource("4_dressing")
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/cars/car.tscn")
+spawn_path = NodePath("../Players")
+
+[node name="StandbyCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.573576, 0.819152, 0, -0.819152, 0.573576, 0, 34, 24)
+current = true
+fov = 70.0
+far = 400.0

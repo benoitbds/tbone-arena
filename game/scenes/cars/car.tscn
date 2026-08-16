@@ -1,0 +1,255 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/cars/car.gd" id="1_car_script"]
+[ext_resource type="Script" path="res://scripts/cars/car_visuals.gd" id="2_car_visuals"]
+
+[sub_resource type="Gradient" id="Gradient_soft"]
+offsets = PackedFloat32Array(0, 0.45, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.55, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_soft"]
+gradient = SubResource("Gradient_soft")
+width = 64
+height = 64
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_smoke_alpha"]
+offsets = PackedFloat32Array(0, 0.18, 1)
+colors = PackedColorArray(1, 1, 1, 0.4, 1, 1, 1, 0.34, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_smoke_alpha"]
+gradient = SubResource("Gradient_smoke_alpha")
+
+[sub_resource type="Curve" id="Curve_expand"]
+_data = [Vector2(0, 0.25), 0.0, 2.2, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_expand"]
+curve = SubResource("Curve_expand")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hull"]
+size = Vector3(1.8, 0.8, 3.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_drift_smoke"]
+transparency = 1
+blend_mode = 0
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.78, 0.76, 0.74, 1)
+albedo_texture = SubResource("GradientTexture2D_soft")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+disable_receive_shadows = true
+
+[sub_resource type="QuadMesh" id="SphereMesh_drift_smoke"]
+material = SubResource("StandardMaterial3D_drift_smoke")
+size = Vector2(0.9, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_engine_smoke"]
+transparency = 1
+blend_mode = 0
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.09, 0.09, 0.10, 1)
+albedo_texture = SubResource("GradientTexture2D_soft")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+disable_receive_shadows = true
+
+[sub_resource type="QuadMesh" id="SphereMesh_engine_smoke"]
+material = SubResource("StandardMaterial3D_engine_smoke")
+size = Vector2(1.1, 1.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fire"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.48, 0.10, 0.9)
+albedo_texture = SubResource("GradientTexture2D_soft")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+disable_receive_shadows = true
+emission_enabled = true
+emission = Color(1, 0.45, 0.08, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="QuadMesh" id="SphereMesh_fire"]
+material = SubResource("StandardMaterial3D_fire")
+size = Vector2(0.55, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nitro"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.30, 0.82, 1, 0.85)
+albedo_texture = SubResource("GradientTexture2D_soft")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+disable_receive_shadows = true
+emission_enabled = true
+emission = Color(0.25, 0.8, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="QuadMesh" id="SphereMesh_nitro"]
+material = SubResource("StandardMaterial3D_nitro")
+size = Vector2(0.42, 0.42)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_car"]
+properties/0/path = NodePath(".:owner_peer_id")
+properties/0/spawn = true
+properties/0/replication_mode = 0
+properties/1/path = NodePath(".:color_index")
+properties/1/spawn = true
+properties/1/replication_mode = 0
+properties/2/path = NodePath(".:current_health")
+properties/2/spawn = true
+properties/2/replication_mode = 0
+properties/3/path = NodePath(".:is_dead")
+properties/3/spawn = true
+properties/3/replication_mode = 0
+properties/4/path = NodePath(".:global_position")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath(".:global_rotation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath(".:velocity")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath(".:heat")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath(".:is_overheated")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath(".:input_steering")
+properties/9/spawn = false
+properties/9/replication_mode = 2
+properties/10/path = NodePath(".:input_nitro")
+properties/10/spawn = false
+properties/10/replication_mode = 2
+properties/11/path = NodePath(".:input_handbrake")
+properties/11/spawn = false
+properties/11/replication_mode = 2
+
+[node name="Car" type="CharacterBody3D"]
+script = ExtResource("1_car_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("BoxShape3D_hull")
+
+[node name="Body" type="Node3D" parent="."]
+script = ExtResource("2_car_visuals")
+
+[node name="DriftSmokeL" type="CPUParticles3D" parent="."]
+scale_amount_curve = SubResource("CurveTexture_expand")
+color_ramp = SubResource("GradientTexture1D_smoke_alpha")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 0.12, 1.25)
+damping_min = 1.2
+damping_max = 2.5
+emitting = false
+amount = 24
+lifetime = 0.75
+local_coords = false
+mesh = SubResource("SphereMesh_drift_smoke")
+direction = Vector3(0, 1, 0.4)
+spread = 25.0
+gravity = Vector3(0, 1.2, 0)
+initial_velocity_min = 0.8
+initial_velocity_max = 2.2
+scale_amount_min = 0.6
+scale_amount_max = 2.4
+
+[node name="DriftSmokeR" type="CPUParticles3D" parent="."]
+scale_amount_curve = SubResource("CurveTexture_expand")
+color_ramp = SubResource("GradientTexture1D_smoke_alpha")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0.12, 1.25)
+damping_min = 1.2
+damping_max = 2.5
+emitting = false
+amount = 24
+lifetime = 0.75
+local_coords = false
+mesh = SubResource("SphereMesh_drift_smoke")
+direction = Vector3(0, 1, 0.4)
+spread = 25.0
+gravity = Vector3(0, 1.2, 0)
+initial_velocity_min = 0.8
+initial_velocity_max = 2.2
+scale_amount_min = 0.6
+scale_amount_max = 2.4
+
+[node name="EngineSmoke" type="CPUParticles3D" parent="."]
+scale_amount_curve = SubResource("CurveTexture_expand")
+color_ramp = SubResource("GradientTexture1D_smoke_alpha")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -1.15)
+damping_min = 1.2
+damping_max = 2.5
+emitting = false
+amount = 30
+lifetime = 1.6
+local_coords = false
+mesh = SubResource("SphereMesh_engine_smoke")
+direction = Vector3(0, 1, 0)
+spread = 18.0
+gravity = Vector3(0, 2.4, 0)
+initial_velocity_min = 1.2
+initial_velocity_max = 2.6
+scale_amount_min = 0.8
+scale_amount_max = 3.0
+
+[node name="EngineFire" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -1.2)
+emitting = false
+amount = 40
+lifetime = 0.35
+mesh = SubResource("SphereMesh_fire")
+direction = Vector3(0, 1, 0)
+spread = 35.0
+gravity = Vector3(0, 3, 0)
+initial_velocity_min = 1.5
+initial_velocity_max = 3.5
+scale_amount_min = 0.5
+scale_amount_max = 1.6
+
+[node name="NitroFlameL" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0.3, 1.85)
+emitting = false
+amount = 30
+lifetime = 0.22
+mesh = SubResource("SphereMesh_nitro")
+direction = Vector3(0, 0, 1)
+spread = 8.0
+initial_velocity_min = 6.0
+initial_velocity_max = 11.0
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+
+[node name="NitroFlameR" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0.3, 1.85)
+emitting = false
+amount = 30
+lifetime = 0.22
+mesh = SubResource("SphereMesh_nitro")
+direction = Vector3(0, 0, 1)
+spread = 8.0
+initial_velocity_min = 6.0
+initial_velocity_max = 11.0
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_car")

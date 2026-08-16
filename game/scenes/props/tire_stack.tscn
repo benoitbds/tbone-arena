@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tire"]
+friction = 0.95
+rough = true
+bounce = 0.12
+absorbent = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tire"]
+height = 0.9
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tire"]
+albedo_color = Color(0.12, 0.12, 0.12, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tire"]
+material = SubResource("StandardMaterial3D_tire")
+top_radius = 0.6
+bottom_radius = 0.6
+height = 0.28
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tire"]
+properties/0/path = NodePath(".:global_position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:global_rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[node name="TireStack" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_tire")
+mass = 40.0
+linear_damp = 2.2
+angular_damp = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("CylinderShape3D_tire")
+
+[node name="Tire1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, 0)
+mesh = SubResource("CylinderMesh_tire")
+
+[node name="Tire2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
+mesh = SubResource("CylinderMesh_tire")
+
+[node name="Tire3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("CylinderMesh_tire")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_tire")
