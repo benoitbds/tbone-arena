@@ -1,5 +1,21 @@
 extends Node
 
+## ⚠ ALBÉDO : `albedo_color` porte le hint `source_color`.
+##
+## Godot interprète donc la valeur comme du **sRGB** et la convertit en linéaire
+## avant qu'elle n'atteigne le shader. Or les tables de référence donnent des
+## albédos **linéaires** (asphalte ≈ 0.09, terre ≈ 0.18). Saisir la valeur
+## physique directement comme couleur la divise par un facteur 7 à 30 :
+##
+##     Color(0.105, 0.11, 0.125)  ->  0.012 linéaire   au lieu de 0.09  (÷7.7)
+##     Color(0.075, 0.068, 0.058) ->  0.0056 linéaire  au lieu de 0.18  (÷32)
+##
+## C'est le bug qui rendait les sols invisibles à l'écran : seules les surfaces
+## d'accent (vibreurs, acier, débris), saisies en sRGB correct, étaient visibles.
+##
+## Conversion : linéaire 0.09 -> sRGB 0.33 · 0.18 -> sRGB 0.46.
+## En GDScript : `Color(x, x, x).linear_to_srgb()`.
+
 ## Fabrique de matériaux PBR à textures PROCÉDURALES (aucun asset image).
 ##
 ## Les `NoiseTexture2D` sont générées sur un thread de travail : elles se
